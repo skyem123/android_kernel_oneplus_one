@@ -859,8 +859,6 @@ static void __init reserve_crashkernel(void)
 	crashk_res.end = crash_base + crash_size - 1;
 	insert_resource(&iomem_resource, &crashk_res);
 }
-#else
-static inline void reserve_crashkernel(void) {}
 
 #ifdef CONFIG_VENDOR_EDIT_OP_LASTKMSG
 /* add by yangrujin@bsp 2015/9/2, support last_kmsg feature */
@@ -890,6 +888,12 @@ static void __init reserve_crashkernel_1(void)
 
 }
 #endif /* CONFIG_VENDOR_EDIT_OP_LSATKMSG */
+
+#else
+static inline void reserve_crashkernel(void) {}
+#ifdef CONFIG_VENDOR_EDIT_OP_LASTKMSG
+static inline void __init reserve_crashkernel_1(void) {}
+#endif /* CONFIG_VENDOR_EDIT_OP_LASTKMSG */
 
 #endif /* CONFIG_KEXEC */
 
